@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+        Schema::table('absensis', function (Blueprint $table) {
+            $table->foreignId('id_pegawais')->references('id_pegawais')->on('pegawais')->onDelete('cascade')->after('id_absensis');
         });
     }
 
@@ -31,6 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('failed_jobs');
+        Schema::table('absensis', function (Blueprint $table) {
+            $table->dropForeign(['id_pegawais']);
+            $table->dropColumn('id_pegawais');
+        });
     }
 };
