@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('absensis', function (Blueprint $table) {
-            $table->foreignId('id_pegawais')->references('id_pegawais')->on('pegawais')->onDelete('cascade')->after('id_absensis');
+        Schema::create('departemens', function (Blueprint $table) {
+            $table->id('id_departemens');
+            $table->string('nama_departemen');
+            $table->text('deskripsi_departemen')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,9 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('absensis', function (Blueprint $table) {
-            $table->dropForeign(['id_pegawais']);
-            $table->dropColumn('id_pegawais');
-        });
+        Schema::dropIfExists('departemens');
     }
 };

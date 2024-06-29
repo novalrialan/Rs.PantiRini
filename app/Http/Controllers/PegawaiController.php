@@ -3,11 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PegawaiController extends Controller
 {
+
+
+    public function authenticate(Request $request)
+    {
+
+
+
+        $person = DB::table('pegawais')->select('*')->where('email', '=', $request->email)->get();
+
+        if (isset($person)) {
+
+            $decode = json_decode($person);
+
+            session(['id_pegawais' => $decode[0]->id_pegawais]);
+            session(['id_departemens' => $decode[0]->id_departemens]);
+            session(['nip' => $decode[0]->nip]);
+            session(['nama' => $decode[0]->nama]);
+            session(['email' => $decode[0]->email]);
+
+
+            return redirect()->intended('/dashboard');
+        }
+
+        return back();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +43,22 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        //
+
+        $pegawais = Pegawai::with('departemens')->get();
+
+        $absensis = DB::table('absensis')
+            ->select('status')
+            ->get();
+
+
+        $data = [
+            'pegawais' => $pegawais,
+            'absensis' => $absensis
+        ];
+
+
+
+        return view('pages.pegawai.index', $data);
     }
 
     /**

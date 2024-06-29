@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PegawaiController;
+use App\Models\Pegawai;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('pages.home.dashboard');
-});
-Route::get('/login', function () {
     return view('pages.home.login');
 });
-Route::get('/register', function () {
-    return view('pages.home.register');
+// Auth Employee
+Route::post('/authenticate', [PegawaiController::class, 'authenticate']);
+
+
+Route::group(['middleware' => ['auth.employee']], function () {
+    Route::get('/dashboard', function () {
+        return view('pages.home.dashboard');
+    });
+
+    Route::get('/register', function () {
+        return view('pages.home.register');
+    });
+    Route::get('/pegawai', [PegawaiController::class, 'index']);
 });
