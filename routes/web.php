@@ -16,20 +16,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
+
+
+Route::post('/authenticate', [PegawaiController::class, 'authenticate'])->name('authenticate');
+
 Route::get('/', function () {
     return view('pages.home.login');
 });
-// Auth Employee
-Route::post('/authenticate', [PegawaiController::class, 'authenticate']);
 
 
-Route::group(['middleware' => ['auth.employee']], function () {
-    Route::get('/dashboard', function () {
-        return view('pages.home.dashboard');
-    });
+// Group Auth Employee
+Route::middleware(['middleware' => 'employee.auth'])->group(function () {
+    // Route::get('/dashboard', function () {
+    //     return view('pages.home.dashboard');
+    // })->name('dashboard');
+
+    // Route::get('/dashboard', [PegawaiController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/register', function () {
         return view('pages.home.register');
     });
+
     Route::get('/pegawai', [PegawaiController::class, 'index']);
 });

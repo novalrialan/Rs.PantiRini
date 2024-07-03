@@ -11,15 +11,16 @@ class Pegawai extends Model
 
     protected $table = 'pegawais';
     // protected $primaryKey = 'id_pegawais';
-    protected $fillable = [
-        'id_departemens',
-        'nama',
-        'alamat',
-        'tanggal_lahir',
-        'jenis_kelamin',
-        'no_telpon',
-        'email',
-    ];
+    // protected $fillable = [
+    //     'id_departemens',
+    //     'nama',
+    //     'alamat',
+    //     'tanggal_lahir',
+    //     'jenis_kelamin',
+    //     'no_telpon',
+    //     'email',
+    //     'nip'
+    // ];
 
 
     public function departemens()

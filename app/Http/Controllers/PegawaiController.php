@@ -9,32 +9,41 @@ use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
+
 class PegawaiController extends Controller
 {
 
 
     public function authenticate(Request $request)
     {
+        // $persons = DB::table('pegawais')->select('*')->where('nip', '=', request('nip'))->get();
 
 
+        try {
+            $person = Pegawai::where('nip', $request->nip)->first();
 
-        $person = DB::table('pegawais')->select('*')->where('email', '=', $request->email)->get();
+            // dd($person->email);
+            session(['id_pegawais' => $person->id_pegawais]);
 
-        if (isset($person)) {
-
-            $decode = json_decode($person);
-
-            session(['id_pegawais' => $decode[0]->id_pegawais]);
-            session(['id_departemens' => $decode[0]->id_departemens]);
-            session(['nip' => $decode[0]->nip]);
-            session(['nama' => $decode[0]->nama]);
-            session(['email' => $decode[0]->email]);
+            session(['id_departemens' => $person->id_departemens]);
 
 
-            return redirect()->intended('/dashboard');
+            session(['nip' => $person->nip]);
+            session(['nama' => $person->nama]);
+            session(['email' => $person->email]);
+
+
+            return $this->dashboard();
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Tidak Mengenali Akses, Silakan Coba Lagi !!');
         }
+    }
 
-        return back();
+
+    public function dashboard()
+    {
+        return view('pages.home.dashboard');
     }
     /**
      * Display a listing of the resource.
