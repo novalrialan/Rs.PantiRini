@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="mx-auto max-w-xs">
-                            <form action="{{ route('authenticate') }}" method="post">
+                            <form action="{{ route('login') }}" method="post">
 
                                 @csrf
                                 <input name="email"

@@ -6,6 +6,7 @@ use App\Models\Pegawai;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
+use App\Models\JadwalKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,24 +18,22 @@ class PegawaiController extends Controller
 
     public function authenticate(Request $request)
     {
-        // $persons = DB::table('pegawais')->select('*')->where('nip', '=', request('nip'))->get();
-
-
         try {
             $person = Pegawai::where('nip', $request->nip)->first();
 
-            // dd($person->email);
-            session(['id_pegawais' => $person->id_pegawais]);
 
-            session(['id_departemens' => $person->id_departemens]);
+            session('id_pegawais', $person->id_pegawais);
 
-
-            session(['nip' => $person->nip]);
-            session(['nama' => $person->nama]);
-            session(['email' => $person->email]);
+            session('id_departemens', $person->id_departemens);
 
 
-            return $this->dashboard();
+            session('nip', $person->nip);
+            session('nama', $person->nama);
+            session('email', $person->email);
+
+
+
+            return redirect()->intended('dashboard');
         } catch (\Throwable $th) {
             return back()->with('error', 'Tidak Mengenali Akses, Silakan Coba Lagi !!');
         }
@@ -58,13 +57,18 @@ class PegawaiController extends Controller
         $absensis = DB::table('absensis')
             ->select('status')
             ->get();
+        $jamkerja = JadwalKerja::with('Pegawai')->where('id_pegawais', '=', session()->get('id_pegawais'))
+            ->get();
+
 
 
         $data = [
             'pegawais' => $pegawais,
-            'absensis' => $absensis
+            'absensis' => $absensis,
+            'jamkerja' => $jamkerja,
         ];
 
+        // dd($data);
 
 
         return view('pages.pegawai.index', $data);

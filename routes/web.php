@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::post('/authenticate', [PegawaiController::class, 'authenticate'])->name('authenticate');
+Route::post('/login', [PegawaiController::class, 'authenticate'])->name('login');
 
 Route::get('/', function () {
     return view('pages.home.login');
@@ -32,11 +32,11 @@ Route::middleware(['middleware' => 'employee.auth'])->group(function () {
     //     return view('pages.home.dashboard');
     // })->name('dashboard');
 
-    // Route::get('/dashboard', [PegawaiController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [PegawaiController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/register', function () {
         return view('pages.home.register');
     });
 
-    Route::get('/pegawai', [PegawaiController::class, 'index']);
+    Route::get('/listpegawai', [PegawaiController::class, 'index'])->name('listpegawai');
 });

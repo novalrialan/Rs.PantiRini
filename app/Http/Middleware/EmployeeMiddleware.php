@@ -20,8 +20,9 @@ class EmployeeMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        $departemens = session('id_departemen');
-        // ddd($departemens);
+        $departemens = session()->get('id_departemens');
+
+
         if ($departemens == 1) {
             // return redirect('/dashboard');
             return $next($request);

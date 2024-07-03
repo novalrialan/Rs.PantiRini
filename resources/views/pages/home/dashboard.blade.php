@@ -28,7 +28,7 @@
                         </div>
                         <div class="pt-5 text-base font-semibold leading-7">
                             <p>
-                                <a href="#"
+                                <a href="{{ route('listpegawai') }}"
                                     class="text-sky-500 transition-all duration-300 group-hover:text-white">Open
                                     Page
                                     &rarr;

@@ -20,6 +20,6 @@ class JadwalKerja extends Model
 
     public function Pegawai()
     {
-        return $this->belongsTo(Pegawai::class);
+        return $this->belongsTo(Pegawai::class, 'id_pegawais', 'id_pegawais');
     }
 }
